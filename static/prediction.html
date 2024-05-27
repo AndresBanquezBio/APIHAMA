@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictor</title>
+</head>
+<body>
+    <h1>Modelo de Predicción</h1>
+    <form id="predictionForm">
+        <label for="input1">Largo de Sépalo:</label>
+        <input type="number" id="input1" name="input1"><br><br>
+        <label for="input2">Ancho del Sépalo:</label>
+        <input type="number" id="input2" name="input2"><br><br>
+        <label for="input3">Largo del Pétalo:</label>
+        <input type="number" id="input3" name="input3"><br><br>
+        <button type="button" onclick="sendPrediction()">Enviar</button>
+    </form>
+    <p id="result"></p>
+
+    <script>
+        async function sendPrediction() {
+            const input1 = document.getElementById('input1').value;
+            const input2 = document.getElementById('input2').value;
+            const input3 = document.getElementById('input3').value;
+
+            const response = await fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    input: [parseFloat(input1), parseFloat(input2), parseFloat(input3)]
+                })
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = 'Predicción: ' + result.prediction;
+        }
+    </script>
+</body>
+</html>
