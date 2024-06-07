@@ -5,13 +5,20 @@ import numpy as np
 app = Flask(__name__)
 
 # Carga el modelo
-with open('model/training_model.pkl', 'rb') as f:
+with open(r'C:\Users\andre\OneDrive\Desktop\APIML\model\SVC.pkl', 'rb') as f:
     modelo = pickle.load(f)
 
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json(force=True)
-    prediccion = modelo.predict(np.array(data['input']).reshape(1, -1))
+    newData = [i[1] for i in data.items()]
+    for i,j in enumerate(newData):
+        if j == True:
+            newData[i]= 1
+        elif j == False:
+            newData[i]= 0
+    print(newData)
+    prediccion = modelo.predict(np.array(newData).reshape(1, -1))
     #prediccion = modelo.predict(np.array([[6.4, 3.1, 5.5]]))
     #array([[6.4, 3.1, 5.5]])
     output = prediccion[0]

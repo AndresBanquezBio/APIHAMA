@@ -4,39 +4,379 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <h1>Modelo de Predicción</h1>
     <form id="predictionForm">
-        <label for="input1">Largo de Sépalo:</label>
-        <input type="number" id="input1" name="input1"><br><br>
-        <label for="input2">Ancho del Sépalo:</label>
-        <input type="number" id="input2" name="input2"><br><br>
-        <label for="input3">Largo del Pétalo:</label>
-        <input type="number" id="input3" name="input3"><br><br>
+        <label for="DESCRIPCION">DESCRIPCION</label>  
+        <select name="DESCRIPCION" id="DESCRIPCION">
+            <option value=0>URGENCIAS PEDIATRICAS</option>
+            <option value=1>URGENCIAS ADULTO</option>
+        </select><br>
+        <label for="MODALIDAD">MODALIDAD</label>
+        <select name="MODALIDAD" id="MODALIDAD">
+            <option value=0>REMITIDO</option>
+            <option value=1>URGENCIAS</option>
+        </select><br>
+        <label for="diagnostico">DIAGNOSTICO</label><select name="diagnostico" id="diagnostico"></select><br>
+        <label for="EResponsable">Entidad responsable (codificada)</label><select name="EResponsable" id="EResponsable"></select><br>
+        <label for="MES">MES</label><select name="MES" id="MES"></select><br>
+        <label for="Urg Fecha Ingreso"></label>Urg Fecha Ingreso<input type="number" id="Urg Fecha Ingreso" name="Urg Fecha Ingreso"/><br>
+        <label for="Urg Fecha Triaje"></label>Urg Fecha Triaje<input type="number" id="Urg Fecha Triaje" name="Urg Fecha Triaje"/><br>
+        <label for="Urg Fecha Consulta F3"></label>F3<input type="number" id="Urg Fecha Consulta F3" name="Urg Fecha Consulta F3"/><br>
+        <label for="Urg Demora Triaje (Minutos)"></label>Urg Demora Triaje (Minutos)<input type="number" id="Urg Demora Triaje (Minutos)" name="Urg Demora Triaje (Minutos)"/><br>
+        <label for="Minutos (Camara - F3)"></label>Minutos (Camara - F3)<input type="number" id="Minutos (Camara - F3)" name="Minutos (Camara - F3)"/><br>
+        <label for="Urg Demora Consulta (Minutos)"></label>Urg Demora Consulta (Minutos)<input type="number" id="Urg Demora Consulta (Minutos)" name="Urg Demora Consulta (Minutos)"/><br>
+        <label for="Minutos (Triaje - F3)"></label>Minutos (Triaje - F3)<input type="number" id="Minutos (Triaje - F3)" name="Minutos (Triaje - F3)"/><br>
+        <label for="Urg Demora1 Consulta (minutos)"></label>Urg Demora1 Consulta (Minutos)<input type="number" id="Urg Demora1 Consulta (Minutos)" name="Urg Demora1 Consulta (minutos)"/><br>
+        <label for="Ppal Tipo">Diagnostico principal tipo</label>
+        <select name="Ppal Tipo" id="Ppal Tipo">
+            <option value=0>REPETIDO</option>
+            <option value=1>NUEVO</option>
+        </select><br>
+        <label for="Relacionados">Relacionados</label><input type="number" id="Relacionados" name="Relacionados"/>
+        <label for="Sexo"></label>Sexo
+        <select name="Sexo" id="Sexo">
+            <option value=0>FEMENINO</option>
+            <option value=1>MASCULINO</option>
+        </select><br>
+        <label for="ProfIde">ProfIde</label><select name="ProfIde" id="ProfIde"></select><br>
+        <label for="Grupo Edad"></label>Grupo Edad
+        <select name="Grupo Edad" id="Grupo Edad">
+            <option value="0">0</option>
+            <option value="1-4">1-4</option>
+            <option value="5-9">5-9</option>
+            <option value="10-14">10-14</option>
+            <option value="15-19">15-19</option>
+            <option value="20-24">20-24</option>
+            <option value="25-29">25-29</option>
+            <option value="30-34">30-34</option>
+            <option value="35-39">35-39</option>
+            <option value="40-44">40-44</option>
+            <option value="45-49">45-49</option>
+            <option value="50-54">50-54</option>
+            <option value="55-59">55-59</option>
+            <option value="60-64">60-64</option>
+            <option value="65-69">65-69</option>
+            <option value="70-74">70-74</option>
+            <option value="75-79">75-79</option>
+            <option value="80-84">80-84</option>
+            <option value="85-89">85-89</option>
+            <option value="> 90">>90</option>
+        </select><br>
+        <label for="Modalidad Contrato">Modalidad Contrato</label>
+        <select name="Modalidad Contrato" id="Modalidad Contrato">
+            <option value="CAPITA">CAPITA</option>
+            <option value="EVENTO">EVENTO</option>
+            <option value="PGP">PGP</option>
+        </select><br>
+        <label for="Paciente Regimen Afiliacion">Paciente Regimen Afiliacion</label>
+        <select name="Paciente Regimen Afiliacion" id="Paciente Regimen Afiliacion">
+            <option value="CONTRIBUTIVO">CONTRIBUTIVO</option>
+            <option value="ESPECIAL">ESPECIAL</option>
+            <option value="NO_ASEGURADO">NO_ASEGURADO</option>
+            <option value="SUBSIDIADO">SUBSIDIADO</option>
+        </select><br>
+        <label for="Clasificación 1 Triaje">Clasificación 1 Triaje</label>
+        <select name="Clasificación 1 Triaje" id="Clasificación 1 Triaje">
+            <option value="NO_APLICA">NO_APLICA</option>
+            <option value="TRIAJE_1">TRIAJE_1</option>
+            <option value="TRIAJE_2">TRIAJE_2</option>
+            <option value="TRIAJE_3">TRIAJE_3</option>
+            <option value="TRIAJE_4">TRIAJE_4</option>
+            <option value="TRIAJE_5">TRIAJE_5</option>
+        </select><br>
+        <label for="Causa externa (riesgo)">Causa externa (riesgo)</label>
+        <select name="Causa externa (riesgo)" id="Causa externa (riesgo)">
+            <option value="ACCIDENTE_DE_TRABAJO">ACCIDENTE_DE_TRABAJO</option>
+            <option value="ACCIDENTE_DE_TRANSITO">ACCIDENTE_DE_TRANSITO</option>
+            <option value="ACCIDENTE_RÁBICO">ACCIDENTE_RÁBICO</option>
+            <option value="ENFERMEDAD_GENERAL">ENFERMEDAD_GENERAL</option>
+            <option value="ENFERMEDAD_PROFESIONAL">ENFERMEDAD_PROFESIONAL</option>
+            <option value="LESIÓN_POR_AGRESIÓN">LESIÓN_POR_AGRESIÓN</option>
+            <option value="OTRA">OTRA</option>
+            <option value="OTRO_TIPO_DE_ACCIDENTE">OTRO_TIPO_DE_ACCIDENTE</option>
+            <option value="SOSPECHA_ABUSO_SEXUAL">SOSPECHA_ABUSO_SEXUAL</option>
+        </select><br>
+        <label for="Ubicación Triaje">Ubicación Triaje</label>
+        <select name="Ubicación Triaje" id="Ubicación Triaje">
+            <option value="CONSULTORIO_1">CONSULTORIO_1</option>
+            <option value="CONSULTORIO_1_MAGISTERIO">CONSULTORIO_1_MAGISTERIO</option>
+            <option value="CONSULTORIO_2">CONSULTORIO_2</option>
+            <option value="CONSULTORIO_3">CONSULTORIO_3</option>
+            <option value="CONSULTORIO_4">CONSULTORIO_4</option>
+            <option value="CONSULTORIO_ONCOLOGIA">CONSULTORIO_ONCOLOGIA</option>
+            <option value="CONSULTORIO_PEDIATRIA">CONSULTORIO_PEDIATRIA</option>
+            <option value="SAI_ADULTO">SAI_ADULTO</option>
+            <option value="TAMIZAJE_COVID">TAMIZAJE_COVID</option>
+            <option value="TRAUMA">TRAUMA</option>
+            <option value="UDEA">UDEA</option>
+            <option value="XPRESS">XPRESS</option>
+        </select><br>
+        <label for="Tiempo Duracion Diligenciamiento F3 en seg">Tiempo Duracion Diligenciamiento F3 en seg</label>
+        <input type="number" id="Tiempo Duracion Diligenciamiento F3 en seg" name="Tiempo Duracion Diligenciamiento F3 en seg"/><br>
+        <label for="Urgencia Xpress">Urgencia Xpress</label>
+        <select name="Urgencia Xpress" id="Urgencia Xpress">
+            <option value="1">Si</option>
+            <option value="0">No</option>
+        </select><br>
+        <label for="ALTO COSTO">ALTO COSTO</label>
+        <select name="ALTO COSTO" id="ALTO COSTO">
+            <option value="1">Si</option>
+            <option value="0">No</option>
+        </select><br>
+
         <button type="button" onclick="sendPrediction()">Enviar</button>
     </form>
-    <p id="result"></p>
+    <div id="result"></div>
+    
 
     <script>
+        async function diagnosticos(ide,data) {
+            const select = document.getElementById(ide);
+            for (const key in data){
+                if (data.hasOwnProperty(key)){
+                    const option = document.createElement('option');
+                    option.value = data[key];
+                    option.textContent = key;
+                    select.appendChild(option);
+                }
+            }
+        }
         async function sendPrediction() {
-            const input1 = document.getElementById('input1').value;
-            const input2 = document.getElementById('input2').value;
-            const input3 = document.getElementById('input3').value;
+            const DESCRIPCION = document.getElementById('DESCRIPCION').value;
+            const MES = document.getElementById('MES').value;
+            const modalidad = document.getElementById('MODALIDAD').value;
+            const diagnostico = document.getElementById('diagnostico').value;
+            const EResponsable = document.getElementById('EResponsable').value;
+            const Urg_Fecha_Ingreso = document.getElementById('Urg Fecha Ingreso').value;
+            const Urg_Fecha_Triaje = document.getElementById('Urg Fecha Triaje').value;
+            const Urg_Fecha_Consulta_F3 = document.getElementById('Urg Fecha Consulta F3').value;
+            const Minutos_Camara_F3 = document.getElementById('Minutos (Camara - F3)').value;
+            const Urg_Demora1_Consulta_Minutos = document.getElementById('Urg Demora1 Consulta (Minutos)').value;
+            const Urg_Demora_Triaje_Minutos = document.getElementById('Urg Demora Triaje (Minutos)').value;
+            const Minutos_Triaje_F3 = document.getElementById('Minutos (Triaje - F3)').value;
+            const Ppal_Tipo = document.getElementById('Ppal Tipo').value;
+            const Relacionados = document.getElementById('Relacionados').value;
+            const Sexo = document.getElementById('Sexo').value;
+            const ProfIde = document.getElementById('ProfIde').value;
+            const Urgencia_Xpress = document.getElementById('Urgencia Xpress').value;
+            const ALTO_COSTO = document.getElementById('ALTO COSTO').value;
+            const Grupo_Edad = document.getElementById('Grupo Edad').value;
+            const Modalidad_Contrato = document.getElementById('Modalidad Contrato').value;
+            const Paciente_Regimen_Afiliacion = document.getElementById('Paciente Regimen Afiliacion').value;
+            const Clasificacion_1_Triaje = document.getElementById('Clasificación 1 Triaje').value;
+            const Causa_Externa_Riesgo = document.getElementById('Causa externa (riesgo)').value;
+            const Ubicacion_Triaje = document.getElementById('Ubicación Triaje').value;
+            const Tiempo_Duracion_Diligenciamiento_F3_en_seg = document.getElementById('Tiempo Duracion Diligenciamiento F3 en seg').value;
+
+            let grupoEdad = {
+                "Grupo Edad_0": false,
+                "Grupo Edad_1-4": false,
+                "Grupo Edad_5-9": false,
+                "Grupo Edad_10-14": false,
+                "Grupo Edad_15-19": false,
+                "Grupo Edad_20-24": false,
+                "Grupo Edad_25-29": false,
+                "Grupo Edad_30-34": false,
+                "Grupo Edad_35-39": false,
+                "Grupo Edad_40-44": false,
+                "Grupo Edad_45-49": false,
+                "Grupo Edad_50-54": false,
+                "Grupo Edad_55-59": false,
+                "Grupo Edad_60-64": false,
+                "Grupo Edad_65-69": false,
+                "Grupo Edad_70-74": false,
+                "Grupo Edad_75-79": false,
+                "Grupo Edad_80-84": false,
+                "Grupo Edad_85-89": false,
+                "Grupo Edad_> 90": false,
+            };
+
+            grupoEdad[`Grupo Edad_${Grupo_Edad}`] = true;
+
+            let clasificacionTriaje = {
+                "Clasificacion 1 Triaje \nEnfermeria _NO_APLICA": false,
+                "Clasificacion 1 Triaje \nEnfermeria _TRIAJE_1": false,
+                "Clasificacion 1 Triaje \nEnfermeria _TRIAJE_2": false,
+                "Clasificacion 1 Triaje \nEnfermeria _TRIAJE_3": false,
+                "Clasificacion 1 Triaje \nEnfermeria _TRIAJE_4": false,
+                "Clasificacion 1 Triaje \nEnfermeria _TRIAJE_5": false,
+            };
+
+            clasificacionTriaje[`Clasificacion 1 Triaje \nEnfermeria _${Clasificacion_1_Triaje.replace(' ', '_')}`] = true;
+
+            let modalidadContrato = {
+                "Paciente Modalidad Contrato_CAPITA": false,
+                "Paciente Modalidad Contrato_EVENTO": false,
+                "Paciente Modalidad Contrato_PGP": false,
+            };
+
+            modalidadContrato[`Paciente Modalidad Contrato_${Modalidad_Contrato}`] = true;
+
+            let pacienteRegimenAfiliacion = {
+                "Paciente Regimen Afiliacion_CONTRIBUTIVO": false,
+                "Paciente Regimen Afiliacion_ESPECIAL": false,
+                "Paciente Regimen Afiliacion_NO_ASEGURADO": false,
+                "Paciente Regimen Afiliacion_SUBSIDIADO": false,
+            };
+
+            pacienteRegimenAfiliacion[`Paciente Regimen Afiliacion_${Paciente_Regimen_Afiliacion.replace(' ', '_')}`] = true;
+
+            let ubicacionTriaje = {
+                "Ubicación Triaje_CONSULTORIO_1": false,
+                "Ubicación Triaje_CONSULTORIO_1_MAGISTERIO": false,
+                "Ubicación Triaje_CONSULTORIO_2": false,
+                "Ubicación Triaje_CONSULTORIO_3": false,
+                "Ubicación Triaje_CONSULTORIO_4": false,
+                "Ubicación Triaje_CONSULTORIO_ONCOLOGIA": false,
+                "Ubicación Triaje_CONSULTORIO_PEDIATRIA": false,
+                "Ubicación Triaje_SAI_ADULTO": false,
+                "Ubicación Triaje_TAMIZAJE_COVID": false,
+                "Ubicación Triaje_TRAUMA": false,
+                "Ubicación Triaje_UDEA": false,
+                "Ubicación Triaje_XPRESS": false,
+            };
+
+            ubicacionTriaje[`Ubicación Triaje_${Ubicacion_Triaje.replace(' ', '_').replace('-', '_')}`] = true;
+
+            let causaExternaRiesgo = {
+                "Causa Externa  (Riesgo)_ACCIDENTE_DE_TRABAJO": false,
+                "Causa Externa  (Riesgo)_ACCIDENTE_DE_TRANSITO": false,
+                "Causa Externa  (Riesgo)_ACCIDENTE_RÁBICO": false,
+                "Causa Externa  (Riesgo)_ENFERMEDAD_GENERAL": false,
+                "Causa Externa  (Riesgo)_ENFERMEDAD_PROFESIONAL": false,
+                "Causa Externa  (Riesgo)_LESIÓN_POR_AGRESIÓN": false,
+                "Causa Externa  (Riesgo)_OTRA": false,
+                "Causa Externa  (Riesgo)_OTRO_TIPO_DE_ACCIDENTE": false,
+                "Causa Externa  (Riesgo)_SOSPECHA_ABUSO_SEXUAL": false,
+            };
+
+            causaExternaRiesgo[`Causa Externa  (Riesgo)_${Causa_Externa_Riesgo.replace(' ', '_').replace('(', '').replace(')', '')}`] = true;
+
+            const data = {
+                "DESCRIPCION": DESCRIPCION,
+                "Mes": MES,
+                "Paciente Entidad Responsable Pago": EResponsable,
+                "Urg Fecha Ingreso": Urg_Fecha_Ingreso,
+                "Urg Fecha Triaje": Urg_Fecha_Triaje,
+                "Urg Fecha Consulta F3": Urg_Fecha_Consulta_F3,
+                "Minutos (Camara - F3)": Minutos_Camara_F3,
+                "Urg Demora1 Consulta (Minutos)": Urg_Demora1_Consulta_Minutos,
+                "Urg Demora Triaje (Minutos)\n": Urg_Demora_Triaje_Minutos,
+                "Urg Demora2 Consulta (Minutos)": 0.0,
+                "Minutos (Triaje - F3)": Minutos_Triaje_F3,
+                "Dx Principal Tipo ": Ppal_Tipo,
+                "Dx Principal Cod": diagnostico,
+                "Paciente Sexo": Sexo,
+                "Modalidad Atencion": modalidad,
+                "Profesional Identificacion": ProfIde,
+                "Hora Diligenciamiento F3": Urgencia_Xpress,
+                "Triaje Re-clasificado": ALTO_COSTO,
+                "Urgencia Xpress F3": Urgencia_Xpress,
+                "ALTO COSTO": ALTO_COSTO,
+                "DxRelacionados": Relacionados,
+                ...modalidadContrato,
+                ...pacienteRegimenAfiliacion,
+                ...grupoEdad,
+                ...clasificacionTriaje,
+                ...causaExternaRiesgo,
+                ...ubicacionTriaje,
+                "Tiempo Duracion Diligenciamiento F3 en seg": Tiempo_Duracion_Diligenciamiento_F3_en_seg,
+            };
+
+            console.log(data)
 
             const response = await fetch('http://127.0.0.1:5000/predict', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    input: [parseFloat(input1), parseFloat(input2), parseFloat(input3)]
-                })
+                body: JSON.stringify(data),
             });
 
             const result = await response.json();
-            document.getElementById('result').innerText = 'Predicción: ' + result.prediction;
+            console.log(result);
+            let predictionResult = result.prediction == 0 ? "Si" : "Nop"
+            document.getElementById('result').innerText = predictionResult;
         }
+
+
+
+
+        fetch('./static/valores_unicos.json')
+            .then(response => response.json())
+            .then(data => {
+                diagnosticos('diagnostico',data);
+            })
+            .catch(error => {
+                console.error('Error fetching the JSON data:', error);
+        });
+        fetch('./static/valores_unicos2.json')
+            .then(response => response.json())
+            .then(data => {
+                diagnosticos('EResponsable',data);
+            })
+            .catch(error => {
+                console.error('Error fetching the JSON data:', error);
+        });
+        fetch('./static/valores_unicos3.json')
+            .then(response => response.json())
+            .then(data => {
+                diagnosticos('MES',data);
+            })
+            .catch(error => {
+                console.error('Error fetching the JSON data:', error);
+        });
+        fetch('./static/valores_unicos4.json')
+            .then(response => response.json())
+            .then(data => {
+                diagnosticos('ProfIde',data);
+            })
+            .catch(error => {
+                console.error('Error fetching the JSON data:', error);
+        });
     </script>
 </body>
 </html>
