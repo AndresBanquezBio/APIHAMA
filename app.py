@@ -5,7 +5,7 @@ import numpy as np
 app = Flask(__name__)
 
 # Carga el modelo
-with open(r'C:\Users\andre\OneDrive\Desktop\APIML\model\SVC.pkl', 'rb') as f:
+with open('model/RandomForest.pkl', 'rb') as f:
     modelo = pickle.load(f)
 
 @app.route('/predict', methods=['POST'])
